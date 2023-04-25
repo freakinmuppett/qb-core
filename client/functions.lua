@@ -86,7 +86,7 @@ RegisterNUICallback('getNotifyConfig', function(_, cb)
 end)
 
 function QBCore.Functions.Notify(text, texttype, length)
-    if type(text) == "table" then
+    if type(text) == "table" then -- Notifcations using these tables will still use QBCores Default Notifications since I have provided support for titles and captions at the moment. Next update?
         local ttext = text.text or 'Placeholder'
         local caption = text.caption or 'Placeholder'
         texttype = texttype or 'primary'
@@ -99,13 +99,10 @@ function QBCore.Functions.Notify(text, texttype, length)
             caption = caption
         })
     else
-        texttype = texttype or 'primary'
-        length = length or 5000
-        SendNUIMessage({
-            action = 'notify',
-            type = texttype,
-            length = length,
-            text = text
+        TriggerEvent('nd-notify:client:sendAlert', {
+            type = texttype or 'inform',
+            text = text,
+            length = length or 5000
         })
     end
 end
